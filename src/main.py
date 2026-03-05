@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.streamable_http import TransportSecuritySettings
 
 from .tools import (
     json_validate, json_format,
@@ -28,10 +29,16 @@ from .middleware import RateLimiter, get_x402_middleware
 # ---------------------------------------------------------------------------
 # MCP Server (FastMCP — stateless Streamable HTTP)
 # ---------------------------------------------------------------------------
+PUBLIC_HOST = os.getenv("PUBLIC_HOST", "agent-utils-mcp.onrender.com")
+
 mcp = FastMCP(
     "agent-utils",
     stateless_http=True,
     json_response=True,
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=["localhost", "127.0.0.1", PUBLIC_HOST, f"{PUBLIC_HOST}:8080"],
+    ),
 )
 
 @mcp.tool()
