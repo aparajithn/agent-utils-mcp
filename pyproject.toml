@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-utils-mcp"
+version = "0.1.0"
+description = "Swiss-army-knife MCP utility server for AI agents"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "mcp[cli]>=0.9.0",
+    "orjson>=3.9.0",
+    "python-multipart>=0.0.6",
+    "markdown>=3.5.0",
+    "markdownify>=0.11.0",
+    "python-dateutil>=2.8.0",
+    "croniter>=2.0.0",
+    "pyjwt>=2.8.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "httpx>=0.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "httpx>=0.26.0",
+]
