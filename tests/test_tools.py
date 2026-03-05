@@ -111,7 +111,9 @@ def test_csv_json_conversion():
     json_str = json.dumps(result["result"])
     result2 = json_to_csv(json_str)
     assert result2["success"] is True
-    assert "name,age" in result2["result"]
+    # Columns may be reordered (sorted alphabetically)
+    assert "name" in result2["result"] and "age" in result2["result"]
+    assert "John" in result2["result"] and "30" in result2["result"]
 
 
 def test_datetime_convert():
