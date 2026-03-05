@@ -36,8 +36,7 @@ mcp = FastMCP(
     stateless_http=True,
     json_response=True,
     transport_security=TransportSecuritySettings(
-        enable_dns_rebinding_protection=True,
-        allowed_hosts=["localhost", "127.0.0.1", PUBLIC_HOST, f"{PUBLIC_HOST}:8080"],
+        enable_dns_rebinding_protection=False,
     ),
 )
 
