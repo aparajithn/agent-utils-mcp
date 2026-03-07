@@ -176,16 +176,221 @@ async def agent_card():
 
 @rest_app.get("/.well-known/mcp/server-card.json")
 async def mcp_server_card():
-    tool_names = [
-        "json_validate", "json_format", "base64_encode", "base64_decode",
-        "hash_generate", "uuid_generate", "url_parse", "regex_test",
-        "markdown_to_html", "html_to_markdown", "text_stats", "slug_generate",
-        "datetime_convert", "cron_parse", "diff_text", "csv_to_json",
-        "json_to_csv", "jwt_decode",
-    ]
     return {
         "serverInfo": {"name": "agent-utils", "version": "0.1.0"},
-        "tools": [{"name": t} for t in tool_names],
+        "tools": [
+            {
+                "name": "json_validate",
+                "description": "Validate a JSON string. Returns parsed object or detailed error.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "json_string": {"type": "string", "description": "JSON string to validate"}
+                    },
+                    "required": ["json_string"]
+                }
+            },
+            {
+                "name": "json_format",
+                "description": "Pretty-print or minify a JSON string.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "json_string": {"type": "string", "description": "JSON string to format"},
+                        "minify": {"type": "boolean", "description": "Minify instead of prettify", "default": False}
+                    },
+                    "required": ["json_string"]
+                }
+            },
+            {
+                "name": "base64_encode",
+                "description": "Encode a string to base64.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string", "description": "Text to encode"}
+                    },
+                    "required": ["text"]
+                }
+            },
+            {
+                "name": "base64_decode",
+                "description": "Decode a base64 string.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "encoded": {"type": "string", "description": "Base64 string to decode"}
+                    },
+                    "required": ["encoded"]
+                }
+            },
+            {
+                "name": "hash_generate",
+                "description": "Generate hash (md5, sha256, sha512) of input text.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string", "description": "Text to hash"},
+                        "algorithm": {"type": "string", "description": "Hash algorithm", "enum": ["md5", "sha256", "sha512"], "default": "sha256"}
+                    },
+                    "required": ["text"]
+                }
+            },
+            {
+                "name": "uuid_generate",
+                "description": "Generate a UUID (v4 or v7).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "version": {"type": "integer", "description": "UUID version (4 or 7)", "enum": [4, 7], "default": 4}
+                    }
+                }
+            },
+            {
+                "name": "url_parse",
+                "description": "Parse a URL into components (scheme, host, path, params, etc.).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "url": {"type": "string", "description": "URL to parse"}
+                    },
+                    "required": ["url"]
+                }
+            },
+            {
+                "name": "regex_test",
+                "description": "Test a regex pattern against text and return all matches.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "pattern": {"type": "string", "description": "Regex pattern"},
+                        "text": {"type": "string", "description": "Text to test against"},
+                        "flags": {"type": "string", "description": "Regex flags (i, m, s, etc.)", "default": ""}
+                    },
+                    "required": ["pattern", "text"]
+                }
+            },
+            {
+                "name": "markdown_to_html",
+                "description": "Convert Markdown to HTML.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "md_text": {"type": "string", "description": "Markdown text to convert"}
+                    },
+                    "required": ["md_text"]
+                }
+            },
+            {
+                "name": "html_to_markdown",
+                "description": "Convert HTML to Markdown.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "html_text": {"type": "string", "description": "HTML text to convert"}
+                    },
+                    "required": ["html_text"]
+                }
+            },
+            {
+                "name": "text_stats",
+                "description": "Compute text statistics: word count, char count, sentences, reading time.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string", "description": "Text to analyze"}
+                    },
+                    "required": ["text"]
+                }
+            },
+            {
+                "name": "slug_generate",
+                "description": "Generate a URL-safe slug from text.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "text": {"type": "string", "description": "Text to convert to slug"},
+                        "separator": {"type": "string", "description": "Separator character", "default": "-"}
+                    },
+                    "required": ["text"]
+                }
+            },
+            {
+                "name": "datetime_convert",
+                "description": "Convert a datetime between timezones/formats, including Unix timestamps.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "dt_string": {"type": "string", "description": "Datetime string or Unix timestamp"},
+                        "from_tz": {"type": "string", "description": "Source timezone", "default": "UTC"},
+                        "to_tz": {"type": "string", "description": "Target timezone", "default": "UTC"},
+                        "from_format": {"type": "string", "description": "Input datetime format (strptime)"},
+                        "to_format": {"type": "string", "description": "Output datetime format (strftime)"}
+                    },
+                    "required": ["dt_string"]
+                }
+            },
+            {
+                "name": "cron_parse",
+                "description": "Parse a cron expression: human-readable description + next N run times.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cron_expression": {"type": "string", "description": "Cron expression (e.g., '0 */6 * * *')"},
+                        "count": {"type": "integer", "description": "Number of next run times to return", "default": 5}
+                    },
+                    "required": ["cron_expression"]
+                }
+            },
+            {
+                "name": "diff_text",
+                "description": "Compute a unified diff between two texts.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "text1": {"type": "string", "description": "First text"},
+                        "text2": {"type": "string", "description": "Second text"},
+                        "context_lines": {"type": "integer", "description": "Number of context lines", "default": 3}
+                    },
+                    "required": ["text1", "text2"]
+                }
+            },
+            {
+                "name": "csv_to_json",
+                "description": "Convert CSV text to a JSON array of objects.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "csv_text": {"type": "string", "description": "CSV text to convert"},
+                        "delimiter": {"type": "string", "description": "CSV delimiter", "default": ","}
+                    },
+                    "required": ["csv_text"]
+                }
+            },
+            {
+                "name": "json_to_csv",
+                "description": "Convert a JSON array to CSV text.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "json_data": {"type": "string", "description": "JSON array string to convert"},
+                        "delimiter": {"type": "string", "description": "CSV delimiter", "default": ","}
+                    },
+                    "required": ["json_data"]
+                }
+            },
+            {
+                "name": "jwt_decode",
+                "description": "Decode a JWT payload without verification (inspection only).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "token": {"type": "string", "description": "JWT token to decode"}
+                    },
+                    "required": ["token"]
+                }
+            }
+        ]
     }
 
 # --- REST endpoints ---

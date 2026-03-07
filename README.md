@@ -2,6 +2,9 @@
 
 A Swiss-army-knife utility server for AI agents — 18 tools via MCP (Streamable HTTP) + REST API.
 
+[![Smithery](https://smithery.ai/badge/@aparajithn/agent-utils-mcp)](https://smithery.ai/server/@aparajithn/agent-utils-mcp)
+[![Glama](https://glama.ai/badge/mcp/agent-utils-mcp)](https://glama.ai/mcp/servers/agent-utils-mcp)
+
 **Live at:** https://agent-utils-mcp.onrender.com
 
 ## Add to Your MCP Client
