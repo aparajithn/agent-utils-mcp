@@ -95,3 +95,8 @@ OpenAPI docs: https://agent-utils-mcp.onrender.com/docs
 ## License
 
 MIT
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/aparajithn-agent-utils-mcp).
+
